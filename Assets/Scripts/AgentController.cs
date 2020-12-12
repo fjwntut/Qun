@@ -9,12 +9,14 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NavMeshObstacle))]
 public class AgentController : MonoBehaviour
 {
     NavMeshAgent agent;
     Animator animator;
     LightDetector lightDetector;
     CapsuleCollider capsuleCollider;
+    Rigidbody rb;
 
     [Header("Navigation")]
     public float Runspeed = 1; // RunSpeed Multiplier
@@ -29,8 +31,8 @@ public class AgentController : MonoBehaviour
     [Range(0f, 100)]
     public float grow = 0; // state 0-100
     public float growSpeed = 0.2f; // state increased by frame when exposed to light 
-    public List<int> cutPoints = new List<int> { 33, 66, 99, 101 }; // change states when grow reached these value
-    public List<Transform> levelBirths;
+    public List<int> cutPoints = new List<int> { 33, 66, 99 }; // change states when grow reached these value
+    public List<Transform> levelBirths = new List<Transform>(3);
     int stateIndex = 0;
 
     void Start()
@@ -40,20 +42,30 @@ public class AgentController : MonoBehaviour
         lightDetector = GetComponent<LightDetector>();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = true;
         lastPos = transform.position;
         nextRestTime = 0;
     }
 
-    public void setWalking(bool walk) // false: pause, true: resume
+    public void ResumeWalking()
     {
+        setWalking(true);
+    }
+
+    void setWalking(bool walk) // false: pause, true: resume
+    {
+
         agent.isStopped = !walk;
         animator.SetBool("Move", walk);
     }
     public void MoveToLevel()
     {
         // TODO: use fall
-        transform.position = levelBirths[stateIndex].position;
-        setWalking(true);
+        agent.enabled = false;
+        transform.position = levelBirths[stateIndex - 1].position;
+        agent.enabled = true;
+
     }
     void OnExposed()
     {
@@ -62,10 +74,9 @@ public class AgentController : MonoBehaviour
         // Change state if grow reach cutPoint
         if (grow > cutPoints[stateIndex])
         {
-            stateIndex++;
             setWalking(false);
+            stateIndex++;
             animator.SetInteger("State", stateIndex);
-            MoveToLevel();
         }
     }
     void ChangeDirection()
@@ -73,7 +84,7 @@ public class AgentController : MonoBehaviour
         setWalking(false);
         agent.destination = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
         nextRestTime = Time.time + Random.Range(minDistance, maxDistance);
-        setWalking(true);
+        //setWalking(true);
     }
 
     void OnMove()
@@ -92,7 +103,8 @@ public class AgentController : MonoBehaviour
         lastPos = transform.position;
 
         // Look at
-        animator.SetLookAtPosition(agent.steeringTarget + transform.forward);
+        transform.LookAt(agent.steeringTarget + transform.forward);
+        transform.Rotate(0, 90, 0);
     }
 
     void Update()
@@ -111,8 +123,5 @@ public class AgentController : MonoBehaviour
             OnMove();
         }
     }
-
-
-
 
 }
