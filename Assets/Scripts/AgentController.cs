@@ -75,9 +75,10 @@ public class AgentController : MonoBehaviour
 
         if (move)
         {
+            Debug.Log($"{agent.speed}, {agent.pathStatus}, {agent.remainingDistance}");
             if (agent.remainingDistance == 0)
             {
-                nextTime = Time.time;
+                //nextTime = Time.time;
                 Debug.Log("Dead End!");
             }
             else
@@ -88,7 +89,7 @@ public class AgentController : MonoBehaviour
 
         if (Time.time >= nextTime && grow > 0)
         {
-            Debug.Log("Times UP");
+            Debug.Log($"{nextTime} Times UP");
             ChangeWalking();
         }
     }
@@ -121,23 +122,26 @@ public class AgentController : MonoBehaviour
         // Change destination on Resume
         if (move)
         {
-            agent.Move(new Vector3(Random.Range(-10, 10), transform.position.y + 10, Random.Range(-10, 10)));
-            //agent.destination = new Vector3(Random.Range(-100, 100), transform.position.y + 100, Random.Range(-100, 100));
+            //agent.Move(new Vector3(Random.Range(-10, 10), transform.position.y + 10, Random.Range(-10, 10)));
+            agent.destination = new Vector3(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(-100, 100));
+            Debug.Log($"set destination to {agent.destination}");
         }
         agent.isStopped = !move;
         animator.SetBool("Move", move);
         nextTime = Time.time + Random.Range(minDistance, maxDistance);
-        Debug.Log((move ? $"Resume" : "Paused") + $", Next Time = {nextTime}");
+        Debug.Log((move ? $"Resume" : "Paused") + $" at {Time.time}, Next Time = {nextTime}");
     }
 
     public void MoveToLevel()
     {
         // TODO: use fall
         nextTime = Time.time;
+
         agent.enabled = false;  // Disable agent to move
         transform.position = levelBirths[stateIndex - 1].position;
         agent.enabled = true;
         Debug.Log($"{name} moved to {levelBirths[stateIndex - 1].name}");
     }
+
 
 }
