@@ -21,10 +21,11 @@ public class AgentController : MonoBehaviour
     [Header("Navigation")]
     public float Runspeed = 1; // RunSpeed Multiplier
     public float stepSize = 1;
-    public float minDistance = 0;
-    public float maxDistance = 5;
+    public float minDistance = 5;
+    public float maxDistance = 20;
     Vector3 lastPos;
-    public float nextRestTime;
+    public float nextTime;
+    bool move;
 
     [Header("Grow")]
 
@@ -45,50 +46,56 @@ public class AgentController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.useGravity = true;
         lastPos = transform.position;
-        nextRestTime = 0;
+        nextTime = 0;
+        grow = 0;
     }
-
-    public void ResumeWalking()
+    void Update()
     {
-        setWalking(true);
-    }
-
-    void setWalking(bool walk) // false: pause, true: resume
-    {
-
-        agent.isStopped = !walk;
-        animator.SetBool("Move", walk);
-    }
-    public void MoveToLevel()
-    {
-        // TODO: use fall
-        agent.enabled = false;
-        transform.position = levelBirths[stateIndex - 1].position;
-        agent.enabled = true;
-
-    }
-    void OnExposed()
-    {
-        grow += growSpeed;
-
-        // Change state if grow reach cutPoint
-        if (grow > cutPoints[stateIndex])
+        // light Detected (stop in last state)
+        if (stateIndex < cutPoints.Count && lightDetector.detected)
         {
-            setWalking(false);
-            stateIndex++;
-            animator.SetInteger("State", stateIndex);
+            grow += growSpeed;
+
+            // Change state if grow reach cutPoint
+            if (grow > cutPoints[stateIndex])
+            {
+                stateIndex++;
+
+                // Pause Walking
+                move = true;
+                ChangeWalking();
+
+                // Start Animation
+                animator.SetInteger("State", stateIndex);
+
+                // Call MoveToLevel in animation
+            }
+
         }
-    }
-    void ChangeDirection()
-    {
-        setWalking(false);
-        agent.destination = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
-        nextRestTime = Time.time + Random.Range(minDistance, maxDistance);
-        //setWalking(true);
+
+        if (move)
+        {
+            if (agent.remainingDistance == 0)
+            {
+                nextTime = Time.time;
+                Debug.Log("Dead End!");
+            }
+            else
+            {
+                OnMove();
+            }
+        }
+
+        if (Time.time >= nextTime && grow > 0)
+        {
+            Debug.Log("Times UP");
+            ChangeWalking();
+        }
     }
 
     void OnMove()
     {
+        // Sync with Transform
         float realStepSize = stepSize;
         if (transform.hasChanged)
         {
@@ -107,21 +114,30 @@ public class AgentController : MonoBehaviour
         transform.Rotate(0, 90, 0);
     }
 
-    void Update()
+    void ChangeWalking() // will pause or resume walking
     {
-        if (lightDetector.detected)
-        {
-            OnExposed();
-        }
+        move = !move;
 
-        if (Time.time >= nextRestTime || agent.remainingDistance <= 1)
+        // Change destination on Resume
+        if (move)
         {
-            ChangeDirection();
+            agent.Move(new Vector3(Random.Range(-10, 10), transform.position.y + 10, Random.Range(-10, 10)));
+            //agent.destination = new Vector3(Random.Range(-100, 100), transform.position.y + 100, Random.Range(-100, 100));
         }
-        else if (animator.GetBool("Move"))
-        {
-            OnMove();
-        }
+        agent.isStopped = !move;
+        animator.SetBool("Move", move);
+        nextTime = Time.time + Random.Range(minDistance, maxDistance);
+        Debug.Log((move ? $"Resume" : "Paused") + $", Next Time = {nextTime}");
+    }
+
+    public void MoveToLevel()
+    {
+        // TODO: use fall
+        nextTime = Time.time;
+        agent.enabled = false;  // Disable agent to move
+        transform.position = levelBirths[stateIndex - 1].position;
+        agent.enabled = true;
+        Debug.Log($"{name} moved to {levelBirths[stateIndex - 1].name}");
     }
 
 }

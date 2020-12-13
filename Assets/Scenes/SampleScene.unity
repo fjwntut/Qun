@@ -879,7 +879,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -1014,7 +1014,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -1179,7 +1179,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -1305,7 +1305,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346392732}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -1368,8 +1368,8 @@ MonoBehaviour:
   Runspeed: 1
   stepSize: 3
   minDistance: 5
-  maxDistance: 20
-  nextRestTime: 0
+  maxDistance: 10
+  nextTime: 0
   grow: 0
   growSpeed: 0.05
   cutPoints: 210000004200000063000000
@@ -2274,17 +2274,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.22
+      value: 2.1333
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.03999996
+      value: 0.073408
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.75
+      value: -2.7393
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
@@ -2329,17 +2329,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3552
+      value: 0.27723002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3552
+      value: 0.27723002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.3552
+      value: 0.27723002
       objectReference: {fileID: 0}
     - target: {fileID: -8568216818573995364, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
@@ -3793,7 +3793,7 @@ MonoBehaviour:
   stepSize: 4
   minDistance: 5
   maxDistance: 10
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -3879,7 +3879,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -4108,7 +4108,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -5194,7 +5194,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -6045,12 +6045,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967388267}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc0a6ae18865b5e4e90be8dd43e4e118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
+  agent: {fileID: 346392734}
   TargetAtMe: 1
   ClickToMove: 1
 --- !u!4 &967388269
@@ -6183,7 +6183,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -7896,7 +7896,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -9552,7 +9552,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -10568,7 +10568,7 @@ MonoBehaviour:
   stepSize: 3
   minDistance: 5
   maxDistance: 20
-  nextRestTime: 0
+  nextTime: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -11980,7 +11980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &7036635864017692806
 GameObject:
   m_ObjectHideFlags: 0
