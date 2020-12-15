@@ -877,9 +877,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -953,7 +954,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198669351}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -1012,9 +1013,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -1088,7 +1090,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209659081}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -1177,9 +1179,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -1253,7 +1256,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 312574874}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -1365,13 +1368,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
+  Runspeed: 4
   stepSize: 3
-  minDistance: 5
-  maxDistance: 10
+  minTime: 10
+  maxTime: 20
   nextTime: 0
+  moving: 0
   grow: 0
-  growSpeed: 0.05
+  growSpeed: 0.002
   cutPoints: 210000004200000063000000
   levelBirths:
   - {fileID: 238397838}
@@ -1426,6 +1430,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &346392741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346392732}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ba9c1e1fc7a814e84343d994df640c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minTime: 0
+  maxTime: 5
+  Runspeed: 1
+  stepSize: 1
+  grow: 0
+  growSpeed: 0.2
+  cutPoints: 210000004200000063000000
+  levelBirths: []
 --- !u!1001 &371261256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2274,17 +2298,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.1333
+      value: 2.22
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.073408
+      value: -0.03999996
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.7393
+      value: -2.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
@@ -2329,17 +2353,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.27723002
+      value: 0.3552
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.27723002
+      value: 0.3552
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.27723002
+      value: 0.3552
       objectReference: {fileID: 0}
     - target: {fileID: -8568216818573995364, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
@@ -3791,9 +3815,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 4
   stepSize: 4
-  minDistance: 5
-  maxDistance: 10
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -3877,9 +3902,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -3953,7 +3979,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565161241}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -4106,9 +4132,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -4182,7 +4209,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 607514423}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -5192,9 +5219,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -5268,7 +5296,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865082135}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -6045,7 +6073,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967388267}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc0a6ae18865b5e4e90be8dd43e4e118, type: 3}
   m_Name: 
@@ -6181,9 +6209,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -6257,7 +6286,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045553101}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -7894,9 +7923,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -7970,7 +8000,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500679940}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -9550,9 +9580,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -9626,7 +9657,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1634588512}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -10566,9 +10597,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Runspeed: 1
   stepSize: 3
-  minDistance: 5
-  maxDistance: 20
+  minTime: 0
+  maxTime: 5
   nextTime: 0
+  moving: 0
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -10642,7 +10674,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946568690}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 1.55, y: 1.07, z: 1.55}
@@ -11980,7 +12012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &7036635864017692806
 GameObject:
   m_ObjectHideFlags: 0
@@ -11990,7 +12022,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4188910385559161441}
-  - component: {fileID: 7036635864017692807}
   m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
@@ -11998,26 +12029,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7036635864017692807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7036635864017692806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9c15f1cf0b38da4aa3c88d238ad32c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boxRotationZ: 90
-  doorRotationY: 0
-  UduinoDoor: 0
-  door: {fileID: 0}
-  StateIndex: 0
-  angles: 
-  scenePrefabs: []
-  microwaveRotateSpeed: 0
 --- !u!33 &7084704148231632676
 MeshFilter:
   m_ObjectHideFlags: 0

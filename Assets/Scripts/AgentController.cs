@@ -21,11 +21,11 @@ public class AgentController : MonoBehaviour
     [Header("Navigation")]
     public float Runspeed = 1; // RunSpeed Multiplier
     public float stepSize = 1;
-    public float minDistance = 5;
-    public float maxDistance = 20;
+    public float minTime = 0;
+    public float maxTime = 5;
     Vector3 lastPos;
     public float nextTime;
-    bool move;
+    public bool moving;
 
     [Header("Grow")]
 
@@ -44,11 +44,13 @@ public class AgentController : MonoBehaviour
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
+
         rb.useGravity = true;
         lastPos = transform.position;
         nextTime = 0;
-        grow = 0;
+        grow = -growSpeed;
     }
+
     void Update()
     {
         // light Detected (stop in last state)
@@ -59,39 +61,48 @@ public class AgentController : MonoBehaviour
             // Change state if grow reach cutPoint
             if (grow > cutPoints[stateIndex])
             {
-                stateIndex++;
-
-                // Pause Walking
-                move = true;
-                ChangeWalking();
-
-                // Start Animation
-                animator.SetInteger("State", stateIndex);
-
-                // Call MoveToLevel in animation
+                ChangeState();
             }
-
+            else if (grow == 0)
+            {
+                setMoving(true);
+            }
         }
 
-        if (move)
+        if (agent.remainingDistance <= 1f || agent.remainingDistance == float.PositiveInfinity)
         {
-            Debug.Log($"{agent.speed}, {agent.pathStatus}, {agent.remainingDistance}");
-            if (agent.remainingDistance == 0)
+            if (moving)
             {
-                //nextTime = Time.time;
-                Debug.Log("Dead End!");
+                setMoving(!moving);
+                nextTime = Time.time + Random.Range(minTime, maxTime) * (moving ? 1f : 0.1f);
             }
             else
             {
-                OnMove();
+                ChangeDirection(2);
+                Debug.Log("finding destination");
             }
         }
-
-        if (Time.time >= nextTime && grow > 0)
+        else if (Time.time >= nextTime)
         {
-            Debug.Log($"{nextTime} Times UP");
-            ChangeWalking();
+            setMoving(!moving);
+            nextTime = Time.time + Random.Range(minTime, maxTime) * (moving ? 1f : 0.1f);
         }
+        else if (moving)
+        {
+            OnMove();
+        }
+        else
+        {
+            // Do nothing
+        }
+    }
+    void ChangeState()
+    {
+        stateIndex++;
+        nextTime = Time.time;// Pause Walking
+        Debug.Log($"Next time set to: {nextTime - Time.time} later");
+        animator.SetInteger("State", stateIndex);// Start Animation
+        // Call MoveToLevel in animation
     }
 
     void OnMove()
@@ -115,33 +126,36 @@ public class AgentController : MonoBehaviour
         transform.Rotate(0, 90, 0);
     }
 
-    void ChangeWalking() // will pause or resume walking
+    void setMoving(bool move) // false: pause, true: resume
     {
-        move = !move;
-
-        // Change destination on Resume
-        if (move)
+        if (moving != move)
         {
-            //agent.Move(new Vector3(Random.Range(-10, 10), transform.position.y + 10, Random.Range(-10, 10)));
-            agent.destination = new Vector3(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(-100, 100));
-            Debug.Log($"set destination to {agent.destination}");
+            moving = move;
+            agent.isStopped = !move;
+            animator.SetBool("Move", move);
+            Debug.Log(moving ? "Resume" : "Paused");
         }
-        agent.isStopped = !move;
-        animator.SetBool("Move", move);
-        nextTime = Time.time + Random.Range(minDistance, maxDistance);
-        Debug.Log((move ? $"Resume" : "Paused") + $" at {Time.time}, Next Time = {nextTime}");
     }
 
     public void MoveToLevel()
     {
         // TODO: use fall
         nextTime = Time.time;
-
-        agent.enabled = false;  // Disable agent to move
+        Debug.Log(nextTime);
+        agent.enabled = false;
         transform.position = levelBirths[stateIndex - 1].position;
         agent.enabled = true;
-        Debug.Log($"{name} moved to {levelBirths[stateIndex - 1].name}");
+
+    }
+    void ChangeDirection(float offset)  // cannot use 
+    {
+        agent.destination = transform.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+        float rd = agent.remainingDistance;
     }
 
+    void SetNextTime(float time)
+    {
+
+    }
 
 }
