@@ -875,12 +875,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -1011,12 +1009,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -1174,20 +1170,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 312574874}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
+  m_Script: {fileID: 11500000, guid: d2ba9c1e1fc7a814e84343d994df640c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
+  minTime: 10
+  maxTime: 20
+  Runspeed: 4
   stepSize: 3
-  minTime: 0
-  maxTime: 5
-  nextTime: 0
-  moving: 0
   grow: 0
-  growSpeed: 0.2
-  cutPoints: 21000000420000006300000065000000
+  growSpeed: 0.002
+  cutPoints: 210000004200000063000000
   levelBirths:
-  - {fileID: 2095140644}
   - {fileID: 238397838}
   - {fileID: 1278858727}
   - {fileID: 1842976200}
@@ -1368,12 +1361,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 4
-  stepSize: 3
   minTime: 10
   maxTime: 20
-  nextTime: 0
-  moving: 0
+  Runspeed: 4
+  stepSize: 3
   grow: 0
   growSpeed: 0.002
   cutPoints: 210000004200000063000000
@@ -1430,26 +1421,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &346392741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346392732}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2ba9c1e1fc7a814e84343d994df640c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minTime: 0
-  maxTime: 5
-  Runspeed: 1
-  stepSize: 1
-  grow: 0
-  growSpeed: 0.2
-  cutPoints: 210000004200000063000000
-  levelBirths: []
 --- !u!1001 &371261256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3813,12 +3784,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 4
-  stepSize: 4
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 4
+  stepSize: 4
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -3900,12 +3869,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -4130,12 +4097,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -5217,12 +5182,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -6207,12 +6170,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -7921,12 +7882,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -9578,12 +9537,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000
@@ -10218,7 +10175,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 989006609734784737, guid: 3129cace71bee784b81156ba80e0ba8e,
         type: 3}
@@ -10595,12 +10552,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c564dc340945347810464542fda1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Runspeed: 1
-  stepSize: 3
   minTime: 0
   maxTime: 5
-  nextTime: 0
-  moving: 0
+  Runspeed: 1
+  stepSize: 3
   grow: 0
   growSpeed: 0.2
   cutPoints: 21000000420000006300000065000000

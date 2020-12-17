@@ -1,31 +1,56 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
 using System.Collections.Generic;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(LightDetector))]
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(CapsuleCollider))]
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(NavMeshObstacle))]
 public class AgentController : MonoBehaviour
 {
     NavMeshAgent agent;
     Animator animator;
     LightDetector lightDetector;
-    CapsuleCollider capsuleCollider;
-    Rigidbody rb;
 
-    [Header("Navigation")]
+
+    [Header("Resting")]
+
+    public float minTime = 0;   // minimum walk time (rest Time is walk time /10)
+    public float maxTime = 5;   // maximum walk time (rest Time is walk time /10)
+    bool NextTimeEnded   // sync with animator parameter
+    {
+        get
+        {
+            // Check if next time ended
+            return (Time.time >= animator.GetFloat("Next time"));
+        }
+        set
+        {
+            // Set nextTime to current time if true / random time if false
+            float nextTime = Time.time + (value ? 0 : Random.Range(minTime, maxTime) * (Moving ? 1f : 0.1f));
+            animator.SetFloat("Next time", nextTime);
+            Debug.Log($"Next time set to: {nextTime - Time.time}s later");
+        }
+    }
+    bool Moving  // sync with animator parameter
+    {
+        get
+        {
+            return animator.GetBool("Move");
+        }
+        set
+        {
+            agent.isStopped = !value;
+            animator.SetBool("Move", value);
+            Debug.Log(value ? "Resume" : "Paused");
+        }
+    }
+
+
+    [Header("Locomotion")]
     public float Runspeed = 1; // RunSpeed Multiplier
-    public float stepSize = 1;
-    public float minTime = 0;
-    public float maxTime = 5;
+    public float stepSize = 1;  // adjust freely
     Vector3 lastPos;
-    public float nextTime;
-    public bool moving;
 
     [Header("Grow")]
 
@@ -42,12 +67,9 @@ public class AgentController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         lightDetector = GetComponent<LightDetector>();
         animator = GetComponent<Animator>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
-        rb = GetComponent<Rigidbody>();
 
-        rb.useGravity = true;
         lastPos = transform.position;
-        nextTime = 0;
+        NextTimeEnded = true;
         grow = -growSpeed;
     }
 
@@ -63,31 +85,31 @@ public class AgentController : MonoBehaviour
             {
                 ChangeState();
             }
+            // Start to move when exposed first time
             else if (grow == 0)
             {
-                setMoving(true);
+                Moving = true;
             }
         }
 
-        if (agent.remainingDistance <= 1f || agent.remainingDistance == float.PositiveInfinity)
+        if (agent.remainingDistance <= 1f || agent.remainingDistance == float.PositiveInfinity) // No valid path
         {
-            if (moving)
+            if (Moving) // for the first frame when path ended
             {
-                setMoving(!moving);
-                nextTime = Time.time + Random.Range(minTime, maxTime) * (moving ? 1f : 0.1f);
+                Moving = !Moving; // stop moving
+                NextTimeEnded = false;  // generate new nextTime
             }
-            else
+            else // havent found valid path or path not yet
             {
                 ChangeDirection(2);
-                Debug.Log("finding destination");
             }
         }
-        else if (Time.time >= nextTime)
+        else if (NextTimeEnded)
         {
-            setMoving(!moving);
-            nextTime = Time.time + Random.Range(minTime, maxTime) * (moving ? 1f : 0.1f);
+            Moving = !Moving;   // change moving state
+            NextTimeEnded = false;  // generate new nextTime
         }
-        else if (moving)
+        else if (Moving)
         {
             OnMove();
         }
@@ -96,13 +118,28 @@ public class AgentController : MonoBehaviour
             // Do nothing
         }
     }
+
     void ChangeState()
     {
         stateIndex++;
-        nextTime = Time.time;// Pause Walking
-        Debug.Log($"Next time set to: {nextTime - Time.time} later");
+        NextTimeEnded = true;// Pause Walking
         animator.SetInteger("State", stateIndex);// Start Animation
         // Call MoveToLevel in animation
+    }
+
+    public void MoveToLevel()
+    {
+        // TODO: use fall
+        agent.enabled = false;
+        transform.position = levelBirths[stateIndex - 1].position;
+        agent.enabled = true;
+        NextTimeEnded = true;
+    }
+    void ChangeDirection(float offset)  // cannot use 
+    {
+        Debug.Log("Finding new destination...");
+        agent.destination = transform.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+        float rd = agent.remainingDistance;
     }
 
     void OnMove()
@@ -123,39 +160,6 @@ public class AgentController : MonoBehaviour
 
         // Look at
         transform.LookAt(agent.steeringTarget + transform.forward);
-        transform.Rotate(0, 90, 0);
+        transform.Rotate(0, 90, 0); // correct prefab rotation
     }
-
-    void setMoving(bool move) // false: pause, true: resume
-    {
-        if (moving != move)
-        {
-            moving = move;
-            agent.isStopped = !move;
-            animator.SetBool("Move", move);
-            Debug.Log(moving ? "Resume" : "Paused");
-        }
-    }
-
-    public void MoveToLevel()
-    {
-        // TODO: use fall
-        nextTime = Time.time;
-        Debug.Log(nextTime);
-        agent.enabled = false;
-        transform.position = levelBirths[stateIndex - 1].position;
-        agent.enabled = true;
-
-    }
-    void ChangeDirection(float offset)  // cannot use 
-    {
-        agent.destination = transform.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
-        float rd = agent.remainingDistance;
-    }
-
-    void SetNextTime(float time)
-    {
-
-    }
-
 }
