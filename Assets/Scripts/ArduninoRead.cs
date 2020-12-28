@@ -6,8 +6,14 @@ using Uduino;
 public class ArduninoRead : MonoBehaviour
 {
     Quaternion initialPos = new Quaternion();
+    public Transform door;
+
+    public List<int> box = new List<int> { 1, 2, 3 };
+    public List<int> doorRotation = new List<int> { 4, 5, 6 };
+
 
     float gyro_normalizer_factor = 0.1f * 180 / Mathf.PI;
+
 
     private void Start()
     {
@@ -20,23 +26,33 @@ public class ArduninoRead : MonoBehaviour
         Debug.Log(data);
         string[] values = data.Split('\\');
 
-        if (int.Parse(values[0]) == 0)
+        if (int.Parse(values[0]) == 1)
         {
             this.transform.rotation = initialPos;
         }
         else
         {
-            float gx = float.Parse(values[1]) * gyro_normalizer_factor;
-            float gy = float.Parse(values[2]) * gyro_normalizer_factor;
-            float gz = float.Parse(values[3]) * gyro_normalizer_factor;
+            transform.rotation *= Quaternion.Euler(parseVector(box));
 
-            //if (Mathf.Abs(gx) < 0.025f) gx = 0f;
-            //if (Mathf.Abs(gy) < 0.025f) gy = 0f;
-            //if (Mathf.Abs(gz) < 0.025f) gz = 0f;
+            door.rotation *= Quaternion.Euler(parseVector(doorRotation));
 
-            //Debug.Log(gx + "/" + gy + "/" + gz);
+        }
 
-            this.transform.rotation *= Quaternion.Euler(new Vector3(0, -gx, 0));
+        Vector3 parseVector(List<int> indexs)
+        {
+            float x, y, z;
+            if (indexs.Count != 3)
+            {
+                Debug.Log("invalid list!");
+                x = y = z = 0;
+            }
+            else
+            {
+                x = float.Parse(values[indexs[0]]) * gyro_normalizer_factor;
+                y = float.Parse(values[indexs[1]]) * gyro_normalizer_factor;
+                z = float.Parse(values[indexs[2]]) * gyro_normalizer_factor;
+            }
+            return new Vector3(x, y, z);
         }
 
     }
