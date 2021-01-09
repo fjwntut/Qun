@@ -46,6 +46,17 @@ public class AgentController : MonoBehaviour
         }
     }
 
+    bool falling
+    {
+        get
+        {
+            return animator.GetBool("Falling");
+        }
+        set
+        {
+            animator.SetBool("Falling", value);
+        }
+    }
 
     [Header("Locomotion")]
     public float Runspeed = 1; // RunSpeed Multiplier
@@ -92,7 +103,7 @@ public class AgentController : MonoBehaviour
             }
         }
 
-        if (agent.remainingDistance <= 1f || agent.remainingDistance == float.PositiveInfinity) // No valid path
+        if (reachlevel && (agent.remainingDistance <= 1f || agent.remainingDistance == float.PositiveInfinity)) // No valid path
         {
             if (Moving) // for the first frame when path ended
             {
@@ -111,6 +122,10 @@ public class AgentController : MonoBehaviour
         }
         else if (Moving)
         {
+            if (!reachlevel && Vector2.Distance(levelBirths[stateIndex - 1].position, transform.position) < 0.1)
+            {
+                reachlevel = true;
+            }
             OnMove();
         }
         else
@@ -119,21 +134,24 @@ public class AgentController : MonoBehaviour
         }
     }
 
+    public bool reachlevel = true;
     void ChangeState()
     {
         stateIndex++;
-        NextTimeEnded = true;// Pause Walking
+        Moving = false;// Pause Walking
+        reachlevel = false;
         animator.SetInteger("State", stateIndex);// Start Animation
         // Call MoveToLevel in animation
     }
 
+    [ContextMenu("MoveLevel")]
     public void MoveToLevel()
     {
-        // TODO: use fall
-        agent.enabled = false;
-        transform.position = levelBirths[stateIndex - 1].position;
-        agent.enabled = true;
-        NextTimeEnded = true;
+
+        Debug.Log($"Move to {levelBirths[stateIndex - 1].gameObject.name}.....");
+        agent.destination = levelBirths[stateIndex - 1].position;
+        Moving = true;
+
     }
     void ChangeDirection(float offset)  // cannot use 
     {
@@ -152,6 +170,8 @@ public class AgentController : MonoBehaviour
             realStepSize = stepSize * transform.localScale.y;
             transform.hasChanged = false;
         }
+        // Match jump
+        falling = (((lastPos.y - transform.position.y) / Time.deltaTime) > 0);
 
         // Match step animation with Nav movement
         float agentSpeed = Vector3.Distance(lastPos, transform.position) / Time.deltaTime; // agent moved distance in second
