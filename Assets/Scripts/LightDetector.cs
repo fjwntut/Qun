@@ -14,7 +14,11 @@ public class LightDetector : MonoBehaviour
 
     public bool detected
     {
-        get { return !hitDetect; }
+
+        get
+        {
+            return !hitDetect;
+        }
     }
 
     void Start()
@@ -32,12 +36,14 @@ public class LightDetector : MonoBehaviour
         hitDetect = Physics.BoxCast(m_collider.bounds.center, transform.localScale * detectorSize, lightDirection, out hit, transform.rotation, maxDistance);
         if (hitDetect)
         {
+
             if (drawDectector)
             {
                 //Output the name of the Collider your Box hit
                 Debug.Log("Hit : " + hit.collider.name);
             }
         }
+
     }
 
     //Draw the BoxCast as a gizmo to show where it currently is testing. Click the Gizmos button to see this

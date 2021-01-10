@@ -6,11 +6,14 @@ using Uduino;
 public class ArduninoRead : MonoBehaviour
 {
     Quaternion initialPos = new Quaternion();
+    public bool doorClosed;
     public Transform door;
     Quaternion doorinitpos;
     public List<int> box = new List<int> { 1, 2, 3 };
     public List<int> doorRotation = new List<int> { 4, 5, 6 };
-    public List<float> offset = new List<float> { 0, 0, 0 };
+    bool[] closes = new bool[10];
+
+    int closesIndex = 0;
 
     float gyro_normalizer_factor = 0.1f * 180 / Mathf.PI;
 
@@ -26,10 +29,22 @@ public class ArduninoRead : MonoBehaviour
         //Debug.Log(data);
         string[] values = data.Split('\\');
 
-        if (int.Parse(values[0]) == 1)
+        Debug.Log(closesIndex);
+        closes[closesIndex] = (values[0] == "1");
+        closesIndex += (closesIndex < closes.Length - 1 ? 1 : 1 - closes.Length);
+        doorClosed = true;
+        foreach (bool close in closes)
+        {
+            if (!close)
+            {
+                doorClosed = false;
+                break;
+            }
+        }
+
+        if (doorClosed)
         {
             //this.transform.rotation = initialPos;
-            values[0] = "0";
             door.localRotation = doorinitpos;
             transform.rotation *= Quaternion.Euler(parseVector(box));
         }
@@ -41,6 +56,7 @@ public class ArduninoRead : MonoBehaviour
 
         }
 
+
         Vector3 parseVector(List<int> indexs)
         {
             float x, y, z;
@@ -51,9 +67,11 @@ public class ArduninoRead : MonoBehaviour
             }
             else
             {
-                x = float.Parse(values[indexs[0]]) * gyro_normalizer_factor;
-                y = float.Parse(values[indexs[1]]) * gyro_normalizer_factor;
-                z = float.Parse(values[indexs[2]]) * gyro_normalizer_factor;
+                string[] vs = values;
+                vs[0] = "0";
+                x = float.Parse(vs[indexs[0]]) * gyro_normalizer_factor;
+                y = float.Parse(vs[indexs[1]]) * gyro_normalizer_factor;
+                z = float.Parse(vs[indexs[2]]) * gyro_normalizer_factor;
             }
             return new Vector3(x, y, z);
         }

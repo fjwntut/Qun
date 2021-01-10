@@ -6,11 +6,12 @@ using UnityEngine;
 public class SceneController : MonoBehaviour
 {
     public Transform door;
+    ArduninoRead arduninoRead;
     bool doorCloseDetected
     {
         get
         {
-            return door.transform.eulerAngles.x == 0;
+            return arduninoRead.doorClosed;
         }
     }
     public bool doorClosed
@@ -44,6 +45,7 @@ public class SceneController : MonoBehaviour
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        arduninoRead = gameObject.GetComponent<ArduninoRead>();
     }
 
     // Update is called once per frame

@@ -8,6 +8,7 @@ public class SpawnerController : MonoBehaviour
 {
 
     public GameObject prefab;
+    public Transform parent;
     public Transform destination;
     float grow
     {
@@ -34,33 +35,36 @@ public class SpawnerController : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         oriScale = transform.localScale;
         gameObject.tag = "Spawner";
+        spawned = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (grow >= 0)
+        Debug.Log($"grow {grow}");
+
+        Debug.Log($"lightdetected! {lightDetector.detected}");
+        if (lightDetector.detected)
         {
-            if (lightDetector.detected)
-            {
-                grow += growSpeed;
-            }
-            else if (!spawned)
-            {
-                grow -= growSpeed;
-            }
-            if (grow > 1)
-            {
-                DestroyMe();
-            }
+            grow += growSpeed;
         }
+        else if (!spawned && grow > 0)
+        {
+            grow -= growSpeed;
+        }
+        if (grow > 1)
+        {
+            DestroyMe();
+        }
+
     }
 
     public void Spawn()
     {
         if (!spawned)
         {
-            GameObject child = Instantiate(prefab, transform.position, Quaternion.identity);
+            GameObject child = Instantiate(prefab, transform.position, Quaternion.identity, parent);
             child.tag = "popcorn";
             Debug.Log("popcorn birth");
         }
