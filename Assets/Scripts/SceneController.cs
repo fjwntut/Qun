@@ -46,6 +46,7 @@ public class SceneController : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         arduninoRead = gameObject.GetComponent<ArduninoRead>();
+        SceneID = 0;
     }
 
     // Update is called once per frame
@@ -63,8 +64,10 @@ public class SceneController : MonoBehaviour
 
 
     }
-    public void setPopcorn()
+
+    void setPopcorn()
     {
+
         GameObject[] popcorns = GameObject.FindGameObjectsWithTag("popcorn");
         GameObject[] births = GameObject.FindGameObjectsWithTag("birth");
 
@@ -77,4 +80,3 @@ public class SceneController : MonoBehaviour
 
     }
 }
-

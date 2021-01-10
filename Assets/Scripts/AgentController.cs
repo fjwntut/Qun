@@ -73,6 +73,8 @@ public class AgentController : MonoBehaviour
     public List<Transform> levelBirths = new List<Transform>(3);
     int stateIndex = 0;
 
+    public Transform box;
+
     void Start()
     {
         // Get Component
@@ -82,6 +84,7 @@ public class AgentController : MonoBehaviour
         lightDetector.enabled = false;
         animator = GetComponent<Animator>();
         lastPos = transform.position;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
         // stop movings
         grow = -growSpeed;
@@ -93,7 +96,7 @@ public class AgentController : MonoBehaviour
     {
         transform.position = place.position;
         lightDetector.enabled = true;
-        agent.enabled = true;
+        Debug.Log("setPlace");
     }
 
     void Update()
@@ -111,9 +114,12 @@ public class AgentController : MonoBehaviour
             // Start to move when exposed first time
             else if (grow == 0)
             {
+                Debug.Log("startToMove");
+                agent.enabled = true;
                 Moving = true;
                 reachlevel = true;
                 NextTimeEnded = true;
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
             }
         }
@@ -149,6 +155,16 @@ public class AgentController : MonoBehaviour
                 // Do nothing
             }
         }
+        else if (stateIndex == 3 && !reachlevel)
+        {
+            GetComponent<Rigidbody>().AddForce(new Vector3(0, 100, 0));
+            if (transform.localPosition.x > 0.91)
+            {
+                reachlevel = true;
+                agent.enabled = true;
+                Debug.Log("reachsky");
+            }
+        }
 
     }
     public bool reachlevel = true;
@@ -166,6 +182,11 @@ public class AgentController : MonoBehaviour
     {
 
         Debug.Log($"Move to {levelBirths[stateIndex - 1].gameObject.name}.....");
+        if (stateIndex == 3)
+        {
+            agent.enabled = false;
+            animator.SetBool("Rising", true);
+        }
         agent.destination = levelBirths[stateIndex - 1].position;
         Moving = true;
 
