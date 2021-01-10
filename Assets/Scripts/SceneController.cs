@@ -2,66 +2,77 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class SceneController : MonoBehaviour
 {
-    [Range(0, 360)]
-    public float boxRotationZ, doorRotationY;
-    public bool UduinoDoor;
-    bool doorClosed;
     public Transform door;
-    public int StateIndex;
-    public List<int> angles;
-    public List<Transform> scenePrefabs;
-    Transform scenePrefab;
-    public float microwaveRotateSpeed;
+    bool doorCloseDetected
+    {
+        get
+        {
+            return door.transform.eulerAngles.x == 0;
+        }
+    }
+    public bool doorClosed
+    {
+        get
+        {
+            return animator.GetBool("Closed");
+        }
+        set
+        {
+            animator.SetBool("Closed", value);
+        }
+    }
+    public float grow
+    {
+        get
+        {
+            return animator.GetFloat("Grow") * 100;
+        }
+        set
+        {
+            animator.SetFloat("Grow", value / 100);
+        }
+
+    }
+    public int SceneID;
+    public List<GameObject> Scene = new List<GameObject>(4);
+
+    Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-        // set up angles
-        for (int i = 0; i < 360; i += 90)
-        {
-            angles.Add(i);
-            angles.Add(i + 1);
-        }
+        animator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // sync door and box rotation with gameObjects
-        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, boxRotationZ));
-        door.rotation = Quaternion.Euler(new Vector3(0, doorRotationY, 0));
-
-        for (int i = 0; i < 360; i += 90)
+        // sync animator with arduino
+        if (doorClosed != doorCloseDetected)
         {
-            if (boxRotationZ >= i)
-            {
-                int State = i / 90;
-
-            }
-        }
-        // detect door opened and send to Animator
-        if (doorClosed != UduinoDoor)
-        {
-            scenePrefab.GetComponent<Animator>().SetBool("Closed", doorClosed);
-            doorClosed = UduinoDoor;
+            doorClosed = !doorClosed;
+            Debug.Log($"doorClosed = {doorClosed}");
         }
 
-        if (!doorClosed)
-        {
-            scenePrefab.GetComponent<Animator>().speed = Mathf.Clamp(doorRotationY, 0, 90) / 90;
-        }
+        // sync rotation
+        grow = (gameObject.transform.eulerAngles.z / 360) * 100;
 
-        //foreach(int index in indexes){
-        //
-        //}
 
     }
-
-    void OnEnterState(int stateIndex)
+    public void setPopcorn()
     {
-        Destroy(scenePrefab);
-        scenePrefab = Instantiate(scenePrefabs[stateIndex]);
+        GameObject[] popcorns = GameObject.FindGameObjectsWithTag("popcorn");
+        GameObject[] births = GameObject.FindGameObjectsWithTag("birth");
+
+        for (int i = 0; i < popcorns.Length; i++)
+        {
+            AgentController agent = popcorns[i].GetComponent<AgentController>();
+            Transform place = births[i].transform;
+            agent.setPlace(place);
+        }
+
     }
 }
 

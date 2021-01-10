@@ -7,34 +7,37 @@ public class ArduninoRead : MonoBehaviour
 {
     Quaternion initialPos = new Quaternion();
     public Transform door;
-
+    Quaternion doorinitpos;
     public List<int> box = new List<int> { 1, 2, 3 };
     public List<int> doorRotation = new List<int> { 4, 5, 6 };
-
+    public List<float> offset = new List<float> { 0, 0, 0 };
 
     float gyro_normalizer_factor = 0.1f * 180 / Mathf.PI;
-
 
     private void Start()
     {
         initialPos = this.transform.rotation;
+        doorinitpos = door.localRotation;
         UduinoManager.Instance.OnDataReceived += DataReceived;
     }
 
     private void DataReceived(string data, UduinoDevice board)
     {
-        Debug.Log(data);
+        //Debug.Log(data);
         string[] values = data.Split('\\');
 
         if (int.Parse(values[0]) == 1)
         {
-            this.transform.rotation = initialPos;
+            //this.transform.rotation = initialPos;
+            values[0] = "0";
+            door.localRotation = doorinitpos;
+            transform.rotation *= Quaternion.Euler(parseVector(box));
         }
         else
         {
             transform.rotation *= Quaternion.Euler(parseVector(box));
-
-            door.rotation *= Quaternion.Euler(parseVector(doorRotation));
+            door.rotation *= Quaternion.Euler(parseVector(doorRotation) * -1);
+            Debug.Log(door.rotation);
 
         }
 

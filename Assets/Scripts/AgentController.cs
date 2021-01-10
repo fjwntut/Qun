@@ -13,6 +13,7 @@ public class AgentController : MonoBehaviour
     LightDetector lightDetector;
 
 
+
     [Header("Resting")]
 
     public float minTime = 0;   // minimum walk time (rest Time is walk time /10)
@@ -29,7 +30,7 @@ public class AgentController : MonoBehaviour
             // Set nextTime to current time if true / random time if false
             float nextTime = Time.time + (value ? 0 : Random.Range(minTime, maxTime) * (Moving ? 1f : 0.1f));
             animator.SetFloat("Next time", nextTime);
-            Debug.Log($"Next time set to: {nextTime - Time.time}s later");
+            // Debug.Log($"Next time set to: {nextTime - Time.time}s later");
         }
     }
     bool Moving  // sync with animator parameter
@@ -76,18 +77,29 @@ public class AgentController : MonoBehaviour
     {
         // Get Component
         agent = GetComponent<NavMeshAgent>();
+        agent.enabled = false;
         lightDetector = GetComponent<LightDetector>();
+        lightDetector.enabled = false;
         animator = GetComponent<Animator>();
-
         lastPos = transform.position;
-        NextTimeEnded = true;
+
+        // stop movings
         grow = -growSpeed;
+        reachlevel = false;
+
+    }
+
+    public void setPlace(Transform place)
+    {
+        transform.position = place.position;
+        lightDetector.enabled = true;
+        agent.enabled = true;
     }
 
     void Update()
     {
         // light Detected (stop in last state)
-        if (stateIndex < cutPoints.Count && lightDetector.detected)
+        if (lightDetector.enabled && stateIndex < cutPoints.Count && lightDetector.detected)
         {
             grow += growSpeed;
 
@@ -100,40 +112,45 @@ public class AgentController : MonoBehaviour
             else if (grow == 0)
             {
                 Moving = true;
+                reachlevel = true;
+                NextTimeEnded = true;
+
             }
         }
-
-        if (reachlevel && (agent.remainingDistance <= 1f || agent.remainingDistance == float.PositiveInfinity)) // No valid path
+        if (agent.enabled)
         {
-            if (Moving) // for the first frame when path ended
+            if (reachlevel && (agent.remainingDistance <= 1f || agent.remainingDistance == float.PositiveInfinity)) // No valid path
             {
-                Moving = !Moving; // stop moving
+                if (Moving) // for the first frame when path ended
+                {
+                    Moving = !Moving; // stop moving
+                    NextTimeEnded = false;  // generate new nextTime
+                }
+                else // havent found valid path or path not yet
+                {
+                    ChangeDirection(2);
+                }
+            }
+            else if (NextTimeEnded)
+            {
+                Moving = !Moving;   // change moving state
                 NextTimeEnded = false;  // generate new nextTime
             }
-            else // havent found valid path or path not yet
+            else if (Moving)
             {
-                ChangeDirection(2);
+                if (!reachlevel && stateIndex > 0 && Vector2.Distance(levelBirths[stateIndex - 1].position, transform.position) < 0.1)
+                {
+                    reachlevel = true;
+                }
+                OnMove();
+            }
+            else
+            {
+                // Do nothing
             }
         }
-        else if (NextTimeEnded)
-        {
-            Moving = !Moving;   // change moving state
-            NextTimeEnded = false;  // generate new nextTime
-        }
-        else if (Moving)
-        {
-            if (!reachlevel && Vector2.Distance(levelBirths[stateIndex - 1].position, transform.position) < 0.1)
-            {
-                reachlevel = true;
-            }
-            OnMove();
-        }
-        else
-        {
-            // Do nothing
-        }
-    }
 
+    }
     public bool reachlevel = true;
     void ChangeState()
     {
@@ -155,7 +172,7 @@ public class AgentController : MonoBehaviour
     }
     void ChangeDirection(float offset)  // cannot use 
     {
-        Debug.Log("Finding new destination...");
+        // Debug.Log("Finding new destination...");
         agent.destination = transform.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
         float rd = agent.remainingDistance;
     }

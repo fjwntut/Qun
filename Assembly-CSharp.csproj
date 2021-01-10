@@ -40,6 +40,7 @@
      <Compile Include="Assets\Scripts\ArduninoRead.cs" />
      <Compile Include="Assets\Scripts\LightDetector.cs" />
      <Compile Include="Assets\Scripts\SceneController.cs" />
+     <Compile Include="Assets\Scripts\SpawnerController.cs" />
      <Compile Include="Assets\Scripts\Target.cs" />
      <Compile Include="Assets\Scripts\TargetController.cs" />
      <Compile Include="Assets\Uduino\Examples\Advanced\Arduino Mega\MegaReadWrite.cs" />
