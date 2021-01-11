@@ -6,13 +6,14 @@ using System.Collections.Generic;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(LightDetector))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody))]
 public class AgentController : MonoBehaviour
 {
     NavMeshAgent agent;
     Animator animator;
     LightDetector lightDetector;
 
-
+    Rigidbody rigidbody;
 
     [Header("Resting")]
 
@@ -44,6 +45,7 @@ public class AgentController : MonoBehaviour
             agent.isStopped = !value;
             animator.SetBool("Move", value);
             Debug.Log(value ? "Resume" : "Paused");
+            animator.SetInteger("State", stateIndex);
         }
     }
 
@@ -83,8 +85,9 @@ public class AgentController : MonoBehaviour
         lightDetector = GetComponent<LightDetector>();
         lightDetector.enabled = false;
         animator = GetComponent<Animator>();
+        rigidbody = GetComponent<Rigidbody>();
         lastPos = transform.position;
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
         // stop movings
         grow = -growSpeed;
@@ -119,7 +122,7 @@ public class AgentController : MonoBehaviour
                 Moving = true;
                 reachlevel = true;
                 NextTimeEnded = true;
-                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                rigidbody.constraints = RigidbodyConstraints.None;
 
             }
         }
@@ -157,7 +160,8 @@ public class AgentController : MonoBehaviour
         }
         else if (stateIndex == 3 && !reachlevel)
         {
-            GetComponent<Rigidbody>().AddForce(new Vector3(0, 100, 0));
+
+            rigidbody.AddForce(new Vector3(0, 100, 0));
             if (transform.localPosition.x > 0.91)
             {
                 reachlevel = true;

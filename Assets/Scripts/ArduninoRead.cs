@@ -5,13 +5,17 @@ using Uduino;
 
 public class ArduninoRead : MonoBehaviour
 {
-    Quaternion initialPos = new Quaternion();
-    public bool doorClosed;
+
+    public List<int> boxRotation = new List<int> { 1, 2, 3 };
+    public float boxOffset;
+    public bool boxCalibration;
+    Quaternion boxInitPos;
     public Transform door;
-    Quaternion doorinitpos;
-    public List<int> box = new List<int> { 1, 2, 3 };
     public List<int> doorRotation = new List<int> { 4, 5, 6 };
-    bool[] closes = new bool[10];
+    public float doorOffset;
+    public bool doorClosed;
+    Quaternion doorinitpos;
+    bool[] closes = new bool[1];
 
     int closesIndex = 0;
 
@@ -19,7 +23,7 @@ public class ArduninoRead : MonoBehaviour
 
     private void Start()
     {
-        initialPos = this.transform.rotation;
+        boxInitPos = transform.rotation;
         doorinitpos = door.localRotation;
         UduinoManager.Instance.OnDataReceived += DataReceived;
     }
@@ -28,7 +32,6 @@ public class ArduninoRead : MonoBehaviour
     {
         //Debug.Log(data);
         string[] values = data.Split('\\');
-
         Debug.Log(closesIndex);
         closes[closesIndex] = (values[0] == "1");
         closesIndex += (closesIndex < closes.Length - 1 ? 1 : 1 - closes.Length);
@@ -46,15 +49,16 @@ public class ArduninoRead : MonoBehaviour
         {
             //this.transform.rotation = initialPos;
             door.localRotation = doorinitpos;
-            transform.rotation *= Quaternion.Euler(parseVector(box));
+            if (!boxCalibration)
+            {
+                transform.rotation *= Quaternion.Euler(parseVector(boxRotation) * boxOffset);
+            }
         }
         else
         {
-            transform.rotation *= Quaternion.Euler(parseVector(box));
-            door.rotation *= Quaternion.Euler(parseVector(doorRotation) * -1);
-            Debug.Log(door.rotation);
-
+            door.rotation *= Quaternion.Euler(parseVector(doorRotation) * doorOffset);
         }
+
 
 
         Vector3 parseVector(List<int> indexs)
